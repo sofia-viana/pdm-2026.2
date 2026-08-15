@@ -1,15 +1,12 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import Profile from "../components/Profile";
+import Minibio from "@/components/MiniBio";
 
 export default function Index() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+    <View>
+      <Profile />
+      <Minibio/>
     </View>
   );
 }
