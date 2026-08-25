@@ -1,78 +1,58 @@
+import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { BottomTabBarHeightCallbackContext } from "@react-navigation/bottom-tabs";
 
-export default function Index() {
+export default function App() {
   const [idade, setIdade] = useState("");
-  const [anoNascimento, setAnoNascimento] = useState<number | null>(null);
+  const [dia, setDia] = useState("");
+  const [mes, setMes] = useState("");
+  const [resultado, setResultado] = useState("");
 
-  const anoAtual = new Date().getFullYear();
-
-  function calcularNascimento() {
-    const idadeNumerica = Number(idade);
-
-    if (idadeNumerica > 0 && idadeNumerica <= 120) {
-      setAnoNascimento(anoAtual - idadeNumerica);
-    } else {
-      setAnoNascimento(null);
+  function calcular() {
+    let ano = 2026 - Number(idade);
+    if (Number(mes) > 8) {
+      ano--;
     }
+    if (Number(mes) === 8 && Number(dia) > 25) {
+      ano--;
+    }
+    setResultado("Você nasceu em " + ano);
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
-        <Text style={styles.emoji}>🎂</Text>
+      <Text style={styles.titulo}>Ano de Nascimento</Text>
 
-        <Text style={styles.title}>
-          Calculadora de Nascimento
-        </Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Sua idade"
+        keyboardType="default"
+        onChangeText={setIdade}
+      />
 
-        <Text style={styles.subtitle}>
-          Descubra aproximadamente em que ano você nasceu!
-        </Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Dia do aniversário"
+        keyboardType="default"
+        onChangeText={setDia}
+      />
 
-        <Text style={styles.label}>
-          Qual é a sua idade?
-        </Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Mês do aniversário"
+        keyboardType="default"
+        onChangeText={setMes}
+      />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Digite sua idade"
-          placeholderTextColor="#999"
-          keyboardType="default"
-          value={idade}
-          onChangeText={setIdade}
-          maxLength={3}
-        />
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={calcularNascimento}
-        >
-          <Text style={styles.buttonText}>Calcular</Text>
-        </TouchableOpacity>
-
-        {anoNascimento !== null && (
-          <View style={styles.result}>
-            <Text style={styles.resultText}>
-              Você nasceu aproximadamente em:
-            </Text>
-
-            <Text style={styles.year}>
-              {anoNascimento}
-            </Text>
-          </View>
-        )}
-
-        <Text style={styles.footer}>
-          📅 Ano atual: {anoAtual}
-        </Text>
+      <View style={styles.botao}>
+        <Button title="Calcular" onPress={calcular} />
       </View>
+
+      {resultado !== "" && (
+        <View style={styles.resultado}>
+          <Text style={styles.textoResultado}>{resultado}</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -82,91 +62,47 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f3f4f6",
     padding: 20,
+    backgroundColor: "#f2f2f2",
   },
 
-  card: {
-    width: "100%",
-    maxWidth: 450,
-    backgroundColor: "#ffffff",
-    borderRadius: 25,
-    padding: 30,
-    elevation: 6,
-  },
-
-  emoji: {
-    fontSize: 50,
-    textAlign: "center",
-    marginBottom: 10,
-  },
-
-  title: {
+  titulo: {
     fontSize: 26,
     fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 10,
-  },
-
-  subtitle: {
-    fontSize: 15,
-    color: "#666",
-    textAlign: "center",
-    marginBottom: 30,
-  },
-
-  label: {
-    fontSize: 17,
-    fontWeight: "600",
-    marginBottom: 10,
+    marginBottom: 25,
   },
 
   input: {
+    width: "80%",
+    height: 50,
+    backgroundColor: "#5c5858",
     borderWidth: 1,
-    borderColor: "#d1d5db",
-    borderRadius: 12,
-    padding: 15,
-    fontSize: 18,
-    backgroundColor: "#f9fafb",
-  },
-
-  button: {
-    backgroundColor: "#6c63ff",
-    padding: 15,
-    borderRadius: 12,
-    alignItems: "center",
-    marginTop: 15,
-  },
-
-  buttonText: {
-    color: "#ffffff",
-    fontSize: 17,
-    fontWeight: "bold",
-  },
-
-  result: {
-    marginTop: 25,
-    padding: 20,
-    borderRadius: 16,
-    backgroundColor: "#f0f0ff",
-    alignItems: "center",
-  },
-
-  resultText: {
-    fontSize: 15,
-    color: "#555",
-    marginBottom: 8,
-  },
-
-  year: {
-    fontSize: 38,
-    fontWeight: "bold",
-  },
-
-  footer: {
-    marginTop: 25,
+    borderColor: "#0b0b0b",
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 12,
     textAlign: "center",
-    fontSize: 14,
-    color: "#888",
+  },
+
+  botao: {
+    width: "50%",
+    marginTop: 5,
+  },
+
+  resultado: {
+    width: "80%",
+    padding: 20,
+    marginTop: 25,
+    backgroundColor: "white",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    alignItems: "center",
+  },
+
+  textoResultado: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
   },
 });
