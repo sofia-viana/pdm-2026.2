@@ -1,21 +1,27 @@
 import { useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+
 import Dado from "./Dado";
 
-export default function JogoDados() {
-  const [rodada, setRodada] = useState<number>(1);
-  const [vez, setVez] = useState<number>(1);
+export default function JogoDado() {
+  const [rodada, setRodada] = useState(1);
+  const [vez, setVez] = useState(1);
 
-  const [d1j1, setD1j1] = useState<number>(1);
-  const [d2j1, setD2j1] = useState<number>(1);
+  const [d1j1, setD1j1] = useState(1);
+  const [d2j1, setD2j1] = useState(1);
 
-  const [d1j2, setD1j2] = useState<number>(1);
-  const [d2j2, setD2j2] = useState<number>(1);
+  const [d1j2, setD1j2] = useState(1);
+  const [d2j2, setD2j2] = useState(1);
 
-  const [resultado, setResultado] = useState<string>("");
+  const [resultado, setResultado] = useState("");
 
-  const [pontosJ1, setPontosJ1] = useState<number>(0);
-  const [pontosJ2, setPontosJ2] = useState<number>(0);
+  const [pontosJ1, setPontosJ1] = useState(0);
+  const [pontosJ2, setPontosJ2] = useState(0);
 
   const fim = rodada > 5;
 
@@ -54,7 +60,7 @@ export default function JogoDados() {
     setVez(1);
   }
 
-  function resultadoFinal(): string {
+  function resultadoFinal() {
     if (pontosJ1 > pontosJ2) {
       return "🏆 Jogador 1 venceu o jogo!";
     }
@@ -77,13 +83,17 @@ export default function JogoDados() {
 
     setD1j1(1);
     setD2j1(1);
+
     setD1j2(1);
     setD2j2(1);
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>🎲 Jogo de Dados</Text>
+
+      <Text style={styles.titulo}>
+        🎲 Jogo de Dados
+      </Text>
 
       {!fim && (
         <Text style={styles.rodada}>
@@ -96,8 +106,9 @@ export default function JogoDados() {
       </Text>
 
       <View style={styles.jogadores}>
-        /* Jogador 1 */
+
         <View style={styles.jogador}>
+
           <Text style={styles.nomeJogador}>
             Jogador 1
           </Text>
@@ -107,15 +118,24 @@ export default function JogoDados() {
             <Dado valor={d2j1} />
           </View>
 
-          <Button
-            title="Jogar"
+          <TouchableOpacity
+            style={[
+              styles.botao,
+              vez !== 1 && styles.botaoDesabilitado,
+            ]}
             onPress={jogarJ1}
             disabled={vez !== 1 || fim}
-          />
+          >
+            <Text style={styles.textoBotao}>
+              Jogar Dado
+            </Text>
+          </TouchableOpacity>
+
         </View>
 
-        /* Jogador 2 */
+
         <View style={styles.jogador}>
+
           <Text style={styles.nomeJogador}>
             Jogador 2
           </Text>
@@ -125,13 +145,23 @@ export default function JogoDados() {
             <Dado valor={d2j2} />
           </View>
 
-          <Button
-            title="Jogar"
+          <TouchableOpacity
+            style={[
+              styles.botao,
+              vez !== 2 && styles.botaoDesabilitado,
+            ]}
             onPress={jogarJ2}
             disabled={vez !== 2 || fim}
-          />
+          >
+            <Text style={styles.textoBotao}>
+              Jogar Dado
+            </Text>
+          </TouchableOpacity>
+
         </View>
+
       </View>
+
 
       {resultado !== "" && !fim && (
         <Text style={styles.resultado}>
@@ -139,35 +169,45 @@ export default function JogoDados() {
         </Text>
       )}
 
+
+      /* RESULTADO FINAL */
       {fim && (
         <View style={styles.final}>
-          <Text style={styles.resultado}>
+
+          <Text style={styles.resultadoFinal}>
             {resultadoFinal()}
           </Text>
 
-          <Button
-            title="Jogar novamente"
+          <TouchableOpacity
+            style={styles.botaoNovamente}
             onPress={reiniciar}
-          />
+          >
+            <Text style={styles.textoBotao}>
+              Jogar Novamente
+            </Text>
+          </TouchableOpacity>
+
         </View>
       )}
+
     </View>
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-    backgroundColor: "#f5f5f5",
+    paddingTop: 70,
+    paddingHorizontal: 20,
   },
 
   titulo: {
     fontSize: 32,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 25,
   },
 
   rodada: {
@@ -177,41 +217,73 @@ const styles = StyleSheet.create({
   },
 
   placar: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 30,
+    fontSize: 20,
+    marginBottom: 50,
   },
 
   jogadores: {
     flexDirection: "row",
-    justifyContent: "center",
-    gap: 50,
+    justifyContent: "space-between",
+    width: "100%",
   },
 
   jogador: {
+    width: "48%",
     alignItems: "center",
-    gap: 15,
   },
 
   nomeJogador: {
     fontSize: 20,
     fontWeight: "bold",
+    marginBottom: 15,
   },
 
   dados: {
     flexDirection: "row",
-    gap: 10,
+    gap: 5,
+    marginBottom: 20,
+  },
+
+  botao: {
+    backgroundColor: "#000",
+    paddingVertical: 12,
+    paddingHorizontal: 22,
+    borderRadius: 25,
+  },
+
+  botaoDesabilitado: {
+    backgroundColor: "#aaa",
+  },
+
+  textoBotao: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 
   resultado: {
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
-    marginTop: 30,
+    marginTop: 40,
   },
 
   final: {
     alignItems: "center",
-    gap: 20,
+    marginTop: 50,
+  },
+
+  resultadoFinal: {
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 25,
+  },
+
+  botaoNovamente: {
+    backgroundColor: "#000",
+    paddingVertical: 14,
+    paddingHorizontal: 25,
+    borderRadius: 25,
   },
 });

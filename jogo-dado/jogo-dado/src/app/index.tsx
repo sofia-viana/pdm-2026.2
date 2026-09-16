@@ -1,5 +1,5 @@
-import JogoDado from "../../Components/JogoDado";
+import Jogodado from "../../Components/Jogodado";
 
 export default function App() {
-  return <JogoDado />;
+  return <Jogodado />;
 }
