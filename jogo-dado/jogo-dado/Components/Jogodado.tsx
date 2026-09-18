@@ -170,7 +170,6 @@ export default function JogoDado() {
       )}
 
 
-      /* RESULTADO FINAL */
       {fim && (
         <View style={styles.final}>
 
